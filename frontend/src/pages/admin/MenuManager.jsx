@@ -155,7 +155,6 @@ export default function MenuManager() {
 
   return (
     <main className="admin-content">
-
       <div className="admin-head">
         <div>
           <span className="eyebrow">MENU MANAGEMENT</span>
@@ -170,17 +169,13 @@ export default function MenuManager() {
         </Link>
       </div>
 
-
       <form
         className="menu-form form-card"
         onSubmit={submit}
       >
-
         <div className="form-row">
-
           <label>
             Name
-
             <input
               required
               value={form.name}
@@ -193,10 +188,8 @@ export default function MenuManager() {
             />
           </label>
 
-
           <label>
             Category
-
             <input
               required
               value={form.category}
@@ -209,10 +202,8 @@ export default function MenuManager() {
             />
           </label>
 
-
           <label>
             Price
-
             <input
               required
               type="number"
@@ -226,13 +217,10 @@ export default function MenuManager() {
               }
             />
           </label>
-
         </div>
-
 
         <label>
           Description
-
           <textarea
             value={form.description}
             onChange={(e) =>
@@ -244,31 +232,43 @@ export default function MenuManager() {
           />
         </label>
 
-
-        {/* IMAGE UPLOAD */}
-
+        {/* CUSTOM STYLED IMAGE UPLOAD SECTION */}
         <div className="image-upload-section">
+          <label className="field-label">Menu Image</label>
 
-          <label>
-            Menu Image
+          <label htmlFor="file-upload" className="custom-file-upload">
+            <svg
+              className="upload-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
+            </svg>
+            <span className="upload-text">
+              <strong>Click to upload</strong> or drag and drop image here
+            </span>
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
           </label>
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-
 
           {imagePreview && (
             <div className="image-preview-wrapper">
-
               <img
                 src={imagePreview}
                 alt="Menu preview"
                 className="menu-image-preview"
               />
-
               <button
                 type="button"
                 className="secondary-btn"
@@ -276,12 +276,9 @@ export default function MenuManager() {
               >
                 Remove image
               </button>
-
             </div>
           )}
-
         </div>
-
 
         {error && (
           <div className="error">
@@ -289,16 +286,13 @@ export default function MenuManager() {
           </div>
         )}
 
-
         <div className="head-actions">
-
           <button
             type="submit"
             className="primary-btn"
           >
             {editing ? "Save changes" : "Add item"}
           </button>
-
 
           {editing && (
             <button
@@ -309,21 +303,15 @@ export default function MenuManager() {
               Cancel
             </button>
           )}
-
         </div>
-
       </form>
 
-
       <div className="menu-admin-grid">
-
         {items.map((item) => (
-
           <article
             className="admin-menu-card"
             key={item._id}
           >
-
             {item.image ? (
               <img
                 src={item.image}
@@ -335,9 +323,7 @@ export default function MenuManager() {
               </div>
             )}
 
-
             <div>
-
               <span className="pill">
                 {item.category}
               </span>
@@ -353,12 +339,9 @@ export default function MenuManager() {
               <b>
                 ₦{item.price.toLocaleString()}
               </b>
-
             </div>
 
-
             <div className="card-actions">
-
               <button
                 onClick={() => toggle(item._id)}
               >
@@ -367,13 +350,11 @@ export default function MenuManager() {
                   : "Unavailable"}
               </button>
 
-
               <button
                 onClick={() => edit(item)}
               >
                 Edit
               </button>
-
 
               <button
                 className="danger-link"
@@ -381,15 +362,10 @@ export default function MenuManager() {
               >
                 Delete
               </button>
-
             </div>
-
           </article>
-
         ))}
-
       </div>
-
     </main>
   );
 }
