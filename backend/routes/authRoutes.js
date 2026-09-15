@@ -1,0 +1,13 @@
+import { Router } from "express";
+import { signup, login, logout, me, adminSignup, adminStatus, forgotPassword, resetPassword } from "../controllers/authController.js";
+import { protect } from "../middleware/authMiddleware.js";
+const router = Router();
+router.get("/admin/status", adminStatus);
+router.post("/signup", signup);
+router.post("/admin/signup", adminSignup);
+router.post("/login", login);
+router.post("/logout", logout);
+router.get("/me", protect, me);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
+export default router;

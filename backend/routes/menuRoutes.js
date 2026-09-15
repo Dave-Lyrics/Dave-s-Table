@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { getMenu, createMenu, updateMenu, deleteMenu, toggleMenu } from "../controllers/menuController.js";
+import { protect, adminOnly } from "../middleware/authMiddleware.js";
+import upload from "../middleware/multerMiddleware.js";
+const router = Router();
+router.get("/", getMenu);
+router.post("/", protect, adminOnly, upload.single("image"), createMenu);
+router.put("/:id", protect, adminOnly, upload.single("image"), updateMenu);
+router.delete("/:id", protect, adminOnly, deleteMenu);
+router.patch("/:id/toggle", protect, adminOnly, toggleMenu);
+export default router;
