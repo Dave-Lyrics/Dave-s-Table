@@ -23,15 +23,54 @@ export async function initializePayment(req, res) {
 
 export async function verifyPayment(req, res) {
   try {
-    const data = await paystackRequest(`/transaction/verify/${encodeURIComponent(req.params.reference)}`);
-    if (data.data.status !== "success") return res.status(400).json({ message: "Payment was not successful" });
+    const data = await paystackRequest(
+      `/transaction/verify/${encodeURIComponent(req.params.reference)}`
+    );
 
-    const order = await Order.findOne({ _id: String(data.data.reference).split("_")[1], customer: req.user._id });
-    if (!order) return res.status(404).json({ message: "Order not found for this payment" });
-    if (Number(data.data.amount) !== Math.round(order.totalPrice * 100)) return res.status(400).json({ message: "Payment amount mismatch" });
+    if (data.data.status !== "success") {
+      return res.status(400).json({
+        message: "Payment was not successful"
+      });
+    }
+
+    const order = await Order.findOne({
+      _id: String(data.data.reference).split("_")[1],
+      customer: req.user._id
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found for this payment"
+      });
+    }
+
+    if (
+      Number(data.data.amount) !==
+      Math.round(order.totalPrice * 100)
+    ) {
+      return res.status(400).json({
+        message: "Payment amount mismatch"
+      });
+    }
 
     const io = req.app.get("io");
-    const paidOrder = await markPaid(order._id, data.data.reference, io);
-    res.json({ data: paidOrder, message: "Payment verified and order confirmed" });
-  } catch (e) { res.status(500).json({ message: e.message }); }
+
+    const paidOrder = await markPaid(
+      order._id,
+      data.data.reference,
+      io
+    );
+
+    res.json({
+      data: paidOrder,
+      message: "Payment verified and order confirmed"
+    });
+
+  } catch (e) {
+    console.error("PAYMENT VERIFICATION ERROR:", e);
+
+    res.status(500).json({
+      message: e.message || "Payment verification failed"
+    });
+  }
 }
